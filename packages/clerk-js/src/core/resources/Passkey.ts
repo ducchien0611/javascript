@@ -2,6 +2,7 @@ import { isWebAuthnPlatformAuthenticatorSupported, isWebAuthnSupported } from '@
 import type {
   DeletedObjectJSON,
   DeletedObjectResource,
+  ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse,
   PasskeyJSON,
   PasskeyResource,
   PasskeyVerificationResource,
@@ -39,6 +40,17 @@ export class Passkey extends BaseResource implements PasskeyResource {
     return BaseResource._fetch({
       path: `/me/passkeys`,
       method: 'POST',
+    }).then(res => new Passkey(res?.response as PasskeyJSON));
+  }
+
+  public static async __experimental_attemptVerification(
+    passkeyId: string,
+    credential: ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse,
+  ) {
+    return BaseResource._fetch({
+      path: `/me/passkeys/${passkeyId}/attempt_verification`,
+      method: 'POST',
+      body: { strategy: 'passkey', publicKeyCredential: JSON.stringify(credential) } as any,
     }).then(res => new Passkey(res?.response as PasskeyJSON));
   }
 

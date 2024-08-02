@@ -37,6 +37,18 @@ export type PublicKeyCredentialWithAuthenticatorAttestationResponse = Omit<
   response: Omit<AuthenticatorAttestationResponse, 'getAuthenticatorData' | 'getPublicKey' | 'getPublicKeyAlgorithm'>;
 };
 
+export type ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse = {
+  type: string;
+  id: string;
+  rawId: string;
+  authenticatorAttachment: string | null;
+  response: {
+    clientDataJSON: string;
+    attestationObject: string;
+    transports: string[];
+  };
+};
+
 export type PublicKeyCredentialWithAuthenticatorAssertionResponse = Omit<
   PublicKeyCredential,
   'response' | 'getClientExtensionResults'

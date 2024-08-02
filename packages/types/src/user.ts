@@ -9,7 +9,7 @@ import type { OrganizationInvitationStatus } from './organizationInvitation';
 import type { OrganizationMembershipResource } from './organizationMembership';
 import type { OrganizationSuggestionResource, OrganizationSuggestionStatus } from './organizationSuggestion';
 import type { ClerkPaginatedResponse, ClerkPaginationParams } from './pagination';
-import type { PasskeyResource } from './passkey';
+import type { ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse, PasskeyResource } from './passkey';
 import type { PhoneNumberResource } from './phoneNumber';
 import type { ClerkResource } from './resource';
 import type { SamlAccountResource } from './samlAccount';
@@ -109,6 +109,10 @@ export interface UserResource extends ClerkResource {
   disableTOTP: () => Promise<DeletedObjectResource>;
   createBackupCode: () => Promise<BackupCodeResource>;
   __experimentalCreatePassKey: () => Promise<PasskeyResource>;
+  __experimentalVerifyPasskey: (
+    passkeyId: string,
+    credential: ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse,
+  ) => Promise<PasskeyResource>;
 
   get verifiedExternalAccounts(): ExternalAccountResource[];
 

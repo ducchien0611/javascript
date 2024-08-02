@@ -8,6 +8,7 @@ import type {
   DeletedObjectJSON,
   DeletedObjectResource,
   EmailAddressResource,
+  ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse,
   ExternalAccountJSON,
   ExternalAccountResource,
   GetOrganizationMemberships,
@@ -133,6 +134,13 @@ export class User extends BaseResource implements UserResource {
 
   __experimentalCreatePassKey = (): Promise<PasskeyResource> => {
     return Passkey.__experimental_fetchPasskey();
+  };
+
+  __experimentalVerifyPasskey = (
+    passkeyId: string,
+    credential: ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse,
+  ): Promise<PasskeyResource> => {
+    return Passkey.__experimental_attemptVerification(passkeyId, credential);
   };
 
   createPhoneNumber = (params: CreatePhoneNumberParams): Promise<PhoneNumberResource> => {
