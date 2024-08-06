@@ -102,14 +102,23 @@ export class Passkey extends BaseResource implements PasskeyResource {
       }
     }
 
-    // Invoke the WebAuthn create() method.
-    const { publicKeyCredential, error } = await webAuthnCreateCredential(publicKey);
+    const creator = this.clerk?.__unstable__createPublicCredentials;
+    if (typeof creator === 'function') {
+      const publicKeyCredential = await creator(publicKey);
 
-    if (!publicKeyCredential) {
-      throw error;
+      if (!publicKeyCredential) {
+        throw new Error('New error');
+      }
+      return this.__experimental_attemptVerification(passkey.id, publicKeyCredential);
+    } else {
+      // Invoke the WebAuthn create() method.
+      const { publicKeyCredential, error } = await webAuthnCreateCredential(publicKey);
+
+      if (!publicKeyCredential) {
+        throw error;
+      }
+      return this.attemptVerification(passkey.id, publicKeyCredential);
     }
-
-    return this.attemptVerification(passkey.id, publicKeyCredential);
   }
 
   /**

@@ -28,6 +28,7 @@ import type {
   DomainOrProxyUrl,
   EnvironmentJSON,
   EnvironmentResource,
+  ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse,
   GoogleOneTapProps,
   HandleEmailLinkVerificationParams,
   HandleOAuthCallbackParams,
@@ -152,6 +153,9 @@ export class Clerk implements ClerkInterface {
   public user: UserResource | null | undefined;
   public __internal_country?: string | null;
   public telemetry: TelemetryCollector | undefined;
+  public __unstable__createPublicCredentials:
+    | ((publicKey: any) => Promise<ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse>)
+    | undefined;
 
   protected internal_last_error: ClerkAPIError | null = null;
   // converted to protected environment to support `updateEnvironment` type assertion
@@ -1416,6 +1420,10 @@ export class Clerk implements ClerkInterface {
   __unstable__onBeforeRequest = (callback: FapiRequestCallback<any>): void => {
     this.#fapiClient.onBeforeRequest(callback);
   };
+
+  // __unstable__createPublicCredentials = (callback: () => string) => {
+  //   return callback()
+  // };
 
   __unstable__onAfterResponse = (callback: FapiRequestCallback<any>): void => {
     this.#fapiClient.onAfterResponse(callback);

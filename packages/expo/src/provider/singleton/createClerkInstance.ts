@@ -37,6 +37,10 @@ export function createClerkInstance(ClerkClass: typeof Clerk) {
       const saveToken = tokenCache.saveToken;
       __internal_clerk = clerk = new ClerkClass(publishableKey);
 
+      // if (Platform.OS === 'ios' || Platform.OS === 'android') {
+      //   __internal_clerk.__unstable__createPublicCredentials = create;
+      // }
+
       // @ts-expect-error - This is an internal API
       __internal_clerk.__unstable__onBeforeRequest(async (requestInit: FapiRequestInit) => {
         // https://reactnative.dev/docs/0.61/network#known-issues-with-fetch-and-cookie-based-authentication

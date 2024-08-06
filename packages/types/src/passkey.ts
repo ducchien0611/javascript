@@ -37,6 +37,14 @@ export type PublicKeyCredentialWithAuthenticatorAttestationResponse = Omit<
   response: Omit<AuthenticatorAttestationResponse, 'getAuthenticatorData' | 'getPublicKey' | 'getPublicKeyAlgorithm'>;
 };
 
+export type PublicKeyCredentialWithAuthenticatorAssertionResponse = Omit<
+  PublicKeyCredential,
+  'response' | 'getClientExtensionResults'
+> & {
+  response: AuthenticatorAssertionResponse;
+};
+
+// Those types are being used from expo apps
 export type ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse = {
   type: string;
   id: string;
@@ -49,9 +57,18 @@ export type ExperimentalPublicKeyCredentialWithAuthenticatorAttestationResponse 
   };
 };
 
-export type PublicKeyCredentialWithAuthenticatorAssertionResponse = Omit<
-  PublicKeyCredential,
-  'response' | 'getClientExtensionResults'
-> & {
-  response: AuthenticatorAssertionResponse;
-};
+export interface AuthenticatorAssertionResponseJSON {
+  clientDataJSON: string;
+  authenticatorData: string;
+  signature: string;
+  userHandle?: string;
+}
+
+export interface AuthenticationResponseJSON {
+  id: string;
+  rawId: string;
+  response: AuthenticatorAssertionResponseJSON;
+  authenticatorAttachment?: AuthenticatorAttachment;
+  clientExtensionResults?: AuthenticationExtensionsClientOutputs;
+  type: PublicKeyCredentialType;
+}

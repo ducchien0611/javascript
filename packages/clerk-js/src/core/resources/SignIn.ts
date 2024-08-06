@@ -268,6 +268,7 @@ export class SignIn extends BaseResource implements SignInResource {
      * The UI should always prevent from this method being called if WebAuthn is not supported.
      * As a precaution we need to check if WebAuthn is supported.
      */
+    // const _isWebAuthnSupported = SignIn.clerk.__unstable__environment?.isWebAuthnSupported || isWebAuthnSupported
     if (!isWebAuthnSupported()) {
       throw new ClerkWebAuthnError('Passkeys are not supported', {
         code: 'passkey_not_supported',
