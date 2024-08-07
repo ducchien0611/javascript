@@ -84,7 +84,8 @@ export const SignInRouterMachine = setup({
 
       const session = createdSessionId || lastActiveSessionId || null;
 
-      const beforeEmit = () => context.router?.push(context.clerk.buildAfterSignInUrl());
+      const beforeEmit = () =>
+        context.router?.push(context.router?.searchParams().get('redirect_url') || context.clerk.buildAfterSignInUrl());
       void context.clerk.setActive({ session, beforeEmit });
 
       enqueue.raise({ type: 'RESET' }, { delay: 2000 }); // Reset machine after 2s delay.
@@ -186,7 +187,8 @@ export const SignInRouterMachine = setup({
               ? context.clerk.__unstable__environment?.displayConfig.signInUrl
               : context.router?.basePath
           }${SSO_CALLBACK_PATH_ROUTE}`,
-          redirectUrlComplete: context.clerk.buildAfterSignInUrl(),
+          redirectUrlComplete:
+            context.router?.searchParams().get('redirect_url') || context.clerk.buildAfterSignInUrl(),
         },
       })),
     },
@@ -201,7 +203,8 @@ export const SignInRouterMachine = setup({
               ? context.clerk.__unstable__environment?.displayConfig.signInUrl
               : context.router?.basePath
           }${SSO_CALLBACK_PATH_ROUTE}`,
-          redirectUrlComplete: context.clerk.buildAfterSignInUrl(),
+          redirectUrlComplete:
+            context.router?.searchParams().get('redirect_url') || context.clerk.buildAfterSignInUrl(),
         },
       })),
     },
@@ -284,7 +287,9 @@ export const SignInRouterMachine = setup({
             log('Already logged in'),
             {
               type: 'navigateExternal',
-              params: ({ context }) => ({ path: context.clerk.buildAfterSignInUrl() }),
+              params: ({ context }) => ({
+                path: context.router?.searchParams().get('redirect_url') || context.clerk.buildAfterSignInUrl(),
+              }),
             },
           ],
         },
@@ -338,6 +343,9 @@ export const SignInRouterMachine = setup({
           actions: sendTo('start', ({ event }) => event),
         },
         'AUTHENTICATE.PASSKEY.AUTOFILL': {
+          actions: sendTo('start', ({ event }) => event),
+        },
+        'AUTHENTICATE.WEB3': {
           actions: sendTo('start', ({ event }) => event),
         },
         NEXT: [

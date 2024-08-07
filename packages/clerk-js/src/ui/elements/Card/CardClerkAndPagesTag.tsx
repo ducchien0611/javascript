@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useEnvironment } from '../../contexts';
 import { Box, Col, Flex, Icon, Link, Text } from '../../customizables';
+import { useDevMode } from '../../hooks/useDevMode';
 import { LogoMark } from '../../icons';
 import type { PropsOfComponent, ThemableCssProp } from '../../styledSystem';
 import { DevModeNotice, DevModeOverlay } from '../DevModeNotice';
@@ -18,10 +19,10 @@ export const CardClerkAndPagesTag = React.memo(
     }
   >((props, ref) => {
     const { sx, outerSx, withFooterPages = false, withDevOverlay = false, devModeNoticeSx, ...rest } = props;
-    const { displayConfig, isDevelopmentOrStaging } = useEnvironment();
-    const withDevModeNotice = isDevelopmentOrStaging();
+    const { displayConfig } = useEnvironment();
+    const { showDevModeNotice } = useDevMode();
 
-    if (!(displayConfig.branded || withFooterPages) && !withDevModeNotice) {
+    if (!(displayConfig.branded || withFooterPages) && !showDevModeNotice) {
       return null;
     }
 

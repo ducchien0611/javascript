@@ -127,6 +127,7 @@ export type SignInContextType = SignInCtx & {
   authQueryString: string | null;
   afterSignUpUrl: string;
   afterSignInUrl: string;
+  transferable: boolean;
 };
 
 export const useSignInContext = (): SignInContextType => {
@@ -175,6 +176,7 @@ export const useSignInContext = (): SignInContextType => {
 
   return {
     ...ctx,
+    transferable: ctx.transferable ?? true,
     componentName,
     signUpUrl,
     signInUrl,
@@ -361,6 +363,7 @@ export const useOrganizationSwitcherContext = () => {
     organizationProfileMode: organizationProfileMode || 'modal',
     createOrganizationMode: createOrganizationMode || 'modal',
     skipInvitationScreen: ctx.skipInvitationScreen || false,
+    hideSlug: ctx.hideSlug || false,
     afterCreateOrganizationUrl,
     afterLeaveOrganizationUrl,
     navigateOrganizationProfile,
@@ -440,6 +443,7 @@ export const useOrganizationListContext = () => {
     ...ctx,
     afterCreateOrganizationUrl,
     skipInvitationScreen: ctx.skipInvitationScreen || false,
+    hideSlug: ctx.hideSlug || false,
     hidePersonal: ctx.hidePersonal || false,
     navigateAfterCreateOrganization,
     navigateAfterSelectOrganization,
@@ -515,6 +519,7 @@ export const useCreateOrganizationContext = () => {
   return {
     ...ctx,
     skipInvitationScreen: ctx.skipInvitationScreen || false,
+    hideSlug: ctx.hideSlug || false,
     navigateAfterCreateOrganization,
     componentName,
   };

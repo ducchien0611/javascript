@@ -501,7 +501,8 @@ export interface Clerk {
   handleUnauthenticated: () => Promise<unknown>;
 }
 
-export type HandleOAuthCallbackParams = SignInForceRedirectUrl &
+export type HandleOAuthCallbackParams = TransferableOption &
+  SignInForceRedirectUrl &
   SignInFallbackRedirectUrl &
   SignUpForceRedirectUrl &
   SignUpFallbackRedirectUrl &
@@ -729,10 +730,20 @@ export type SignInProps = RoutingOptions & {
    * Initial values that are used to prefill the sign in form.
    */
   initialValues?: SignInInitialValues;
-} & SignUpForceRedirectUrl &
+} & TransferableOption &
+  SignUpForceRedirectUrl &
   SignUpFallbackRedirectUrl &
   LegacyRedirectProps &
   AfterSignOutUrl;
+
+interface TransferableOption {
+  /**
+   * Indicates whether or not sign in attempts are transferable to the sign up flow.
+   * When set to false, prevents opaque sign ups when a user attempts to sign in via OAuth with an email that doesn't exist.
+   * @default true
+   */
+  transferable?: boolean;
+}
 
 export type SignInModalProps = WithoutRouting<SignInProps>;
 
@@ -842,11 +853,6 @@ export type OrganizationProfileProps = RoutingOptions & {
    * Provide custom pages and links to be rendered inside the OrganizationProfile.
    */
   customPages?: CustomPage[];
-  /**
-   * @experimental
-   * Specify on which page the organization profile modal will open.
-   **/
-  __experimental_startPath?: string;
 };
 
 export type OrganizationProfileModalProps = WithoutRouting<OrganizationProfileProps>;
@@ -871,6 +877,11 @@ export type CreateOrganizationProps = RoutingOptions & {
    * prop of ClerkProvided (if one is provided)
    */
   appearance?: CreateOrganizationTheme;
+  /**
+   * Hides the optional "slug" field in the organization creation screen.
+   * @default false
+   */
+  hideSlug?: boolean;
 };
 
 export type CreateOrganizationModalProps = WithoutRouting<CreateOrganizationProps>;
@@ -1002,6 +1013,11 @@ export type OrganizationSwitcherProps = CreateOrganizationMode &
      */
     skipInvitationScreen?: boolean;
     /**
+     * Hides the optional "slug" field in the organization creation screen.
+     * @default false
+     */
+    hideSlug?: boolean;
+    /**
      * Customisation options to fully match the Clerk components to your own brand.
      * These options serve as overrides and will be merged with the global `appearance`
      * prop of ClerkProvided (if one is provided)
@@ -1056,6 +1072,11 @@ export type OrganizationListProps = {
    * @default undefined`
    */
   afterSelectPersonalUrl?: ((user: UserResource) => string) | LooseExtractedParams<PrimitiveKeys<UserResource>>;
+  /**
+   * Hides the optional "slug" field in the organization creation screen.
+   * @default false
+   */
+  hideSlug?: boolean;
 };
 
 export interface HandleEmailLinkVerificationParams {
