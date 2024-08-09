@@ -89,6 +89,7 @@ export interface SignUpResource extends ClerkResource {
   ) => Promise<SignUpResource>;
 
   authenticateWithMetamask: (params?: SignUpAuthenticateWithMetamaskParams) => Promise<SignUpResource>;
+  authenticateWithCoinbase: (params?: SignUpAuthenticateWithMetamaskParams) => Promise<SignUpResource>;
 }
 
 export type SignUpStatus = 'missing_requirements' | 'complete' | 'abandoned';
